@@ -17,6 +17,8 @@ public class Countries {
 
     private String name;
 
+    private boolean is_next;
+
     private boolean is_completed;
 
     private LocalDateTime created_at;
