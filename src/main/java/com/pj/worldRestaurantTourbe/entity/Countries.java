@@ -1,5 +1,6 @@
 package com.pj.worldRestaurantTourbe.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -15,13 +16,18 @@ public class Countries {
     @Id
     private int id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "is_next")
     private boolean is_next;
 
+    @Column(name = "is_completed")
     private boolean is_completed;
 
+    @Column(name = "created_at")
     private LocalDateTime created_at;
 
+    @Column(name = "updated_at")
     private LocalDateTime updated_at;
 }
