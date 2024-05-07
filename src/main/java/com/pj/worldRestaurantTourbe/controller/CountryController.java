@@ -1,6 +1,7 @@
 package com.pj.worldRestaurantTourbe.controller;
 
 import com.pj.worldRestaurantTourbe.entity.Countries;
+import com.pj.worldRestaurantTourbe.entity.NextCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ public class CountryController {
     }
 
     @PutMapping("/chooseNextCountry")
-    public Countries updateIsNext(Long id, boolean is_next) {
-        return countryService.updateIsNext(id, is_next);
+    public Countries updateIsNext(@RequestBody NextCountry nextCountry) {
+
+        return countryService.updateIsNext(nextCountry.getId(), nextCountry.is_next());
     }
 }

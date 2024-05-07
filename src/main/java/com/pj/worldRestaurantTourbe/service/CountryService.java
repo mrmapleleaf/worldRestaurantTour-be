@@ -19,7 +19,7 @@ public class CountryService {
     }
 
     @Transactional
-    public Countries updateIsNext(Long id, boolean is_next) {
+    public Countries updateIsNext(long id, boolean is_next) {
 
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
 
