@@ -18,12 +18,16 @@ public class CountryService {
         return countryRepository.findAll();
     }
 
+    public List<Countries> getNextCountry(boolean next) {
+        return countryRepository.findByNextIs(next);
+    }
+
     @Transactional
-    public Countries updateIsNext(long id, boolean is_next) {
+    public Countries updateIsNext(long id, boolean next) {
 
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
 
-        targetCountry.set_next(is_next);
+        targetCountry.setNext(next);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
         countryRepository.save(targetCountry);

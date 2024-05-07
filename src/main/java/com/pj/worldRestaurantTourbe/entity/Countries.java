@@ -19,11 +19,11 @@ public class Countries {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "is_next")
-    private boolean is_next;
+    @Column(name = "next")
+    private boolean next;
 
-    @Column(name = "is_completed")
-    private boolean is_completed;
+    @Column(name = "completed")
+    private boolean completed;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;

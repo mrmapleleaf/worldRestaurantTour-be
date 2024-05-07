@@ -20,6 +20,11 @@ public class CountryController {
          return countryService.getAllCountries();
     }
 
+    @GetMapping("/nextCountry")
+    public List<Countries> getNextCountry(@ModelAttribute boolean next) {
+        return countryService.getNextCountry(next);
+    }
+
     @PutMapping("/chooseNextCountry")
     public Countries updateIsNext(@RequestBody NextCountry nextCountry) {
 
