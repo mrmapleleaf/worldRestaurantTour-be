@@ -12,6 +12,6 @@ public class NextCountry {
     private int id;
 
     @JsonDeserialize(using = BooleanDeserializer.class) // カスタムデシリアライザを使用
-    private boolean is_next;
+    private boolean next;
 
 }

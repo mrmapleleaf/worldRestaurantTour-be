@@ -21,13 +21,13 @@ public class CountryController {
     }
 
     @GetMapping("/nextCountry")
-    public List<Countries> getNextCountry(@ModelAttribute boolean next) {
+    public List<Countries> getNextCountry(@RequestParam boolean next) {
         return countryService.getNextCountry(next);
     }
 
-    @PutMapping("/chooseNextCountry")
-    public Countries updateIsNext(@RequestBody NextCountry nextCountry) {
+    @PutMapping("/changeNextCountry")
+    public Countries changeNextCountry(@RequestBody NextCountry nextCountry) {
 
-        return countryService.updateIsNext(nextCountry.getId(), nextCountry.is_next());
+        return countryService.updateIsNext(nextCountry.getId(), nextCountry.isNext());
     }
 }
