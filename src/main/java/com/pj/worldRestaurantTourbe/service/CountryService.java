@@ -14,6 +14,7 @@ public class CountryService {
 
     @Autowired
     private CountryRepository countryRepository;
+
     public List<Countries> getAllCountries() {
         return countryRepository.findAll();
     }
@@ -28,6 +29,20 @@ public class CountryService {
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
 
         targetCountry.setNext(next);
+        targetCountry.setUpdated_at(LocalDateTime.now());
+
+        countryRepository.save(targetCountry);
+
+        return targetCountry;
+    }
+
+    @Transactional
+    public Countries updateCompleted(long id, boolean next, boolean completed) {
+
+        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
+
+        targetCountry.setNext(next);
+        targetCountry.setCompleted(completed);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
         countryRepository.save(targetCountry);
