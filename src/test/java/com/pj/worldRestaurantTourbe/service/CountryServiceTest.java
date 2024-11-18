@@ -35,6 +35,7 @@ class CountryServiceTest {
         country = new Countries();
         country.setId(1);
         country.setName("日本");
+        country.setRestaurants(null);
         country.setNext(false);
         country.setCompleted(false);
     }

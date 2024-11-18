@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Countries {
+public class Restaurants {
 
     @Id
     private int id;
@@ -17,15 +17,15 @@ public class Countries {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "next")
-    private boolean next;
+    @Column(name = "thoughts")
+    private String thoughts;
+
+    @Column(name = "url")
+    private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
-    private Restaurants restaurants;
-
-    @Column(name = "completed")
-    private boolean completed;
+    @JoinColumn(name = "country_id")
+    private Countries countries;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
