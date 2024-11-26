@@ -1,6 +1,5 @@
 package com.pj.worldRestaurantTourbe.service;
 
-import com.pj.worldRestaurantTourbe.WorldRestaurantTourBeApplication;
 import com.pj.worldRestaurantTourbe.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
