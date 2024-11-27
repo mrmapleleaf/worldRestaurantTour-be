@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -59,18 +60,6 @@ public class CountryControllerTest {
 
     private static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
-    @BeforeAll
-    public static void setup() {
-
-        request = new MockHttpServletRequest();
-
-        request.setParameter("id", "2");
-        request.setParameter("name", "korea");
-        request.setParameter("next", "true");
-        request.setParameter("completed", "false");
-
-    }
-
     @BeforeEach
     public void setupDatabase() {
         jdbc.execute(sqlAddCountry);
@@ -78,7 +67,7 @@ public class CountryControllerTest {
 
     @Test
     @DisplayName("getAllCountries")
-    public void getAllCountriesHttpRequest() throws Exception{
+    public void getAllCountriesHttpRequest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/country/allCountries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -86,8 +75,27 @@ public class CountryControllerTest {
     }
 
     @Test
+    @DisplayName("getNextCountry")
+    public void getNextCountryHttpRequest() throws Exception {
+        Countries country = new Countries();
+        country.setId(2);
+        country.setName("korea");
+        country.setNext(true);
+        country.setCompleted(false);
+
+        entityManager.persist(country);
+        entityManager.flush();
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/country/nextCountry")
+                        .param("next", "true"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
     @DisplayName("changeNextCountry")
-    public void changeNextCountryHttpRequest() throws Exception{
+    public void changeNextCountryHttpRequest() throws Exception {
 
         List<Countries> nextCountries = countryService.getNextCountry(true);
         assertEquals(0, nextCountries.size());
