@@ -3,6 +3,7 @@ package com.pj.worldRestaurantTourbe.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pj.worldRestaurantTourbe.entity.Countries;
 import com.pj.worldRestaurantTourbe.entity.NextCountry;
+import com.pj.worldRestaurantTourbe.entity.VisitedCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -116,5 +117,24 @@ public class CountryControllerTest {
 
         nextCountries = countryService.getNextCountry(true);
         assertEquals(1, nextCountries.size());
+    }
+
+    @Test
+    @DisplayName("makeChosenCountryCompleted")
+    public void makeChosenCountryCompletedHttpRequest() throws Exception {
+
+        VisitedCountry visitedCountry = new VisitedCountry();
+        visitedCountry.setId(1);
+        visitedCountry.setNext(false);
+        visitedCountry.setCompleted(true);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/makeChosenCountryCompleted")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(visitedCountry)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("japan")))
+                .andExpect(jsonPath("$.next", is(false)))
+                .andExpect(jsonPath("$.completed", is(true)));
     }
 }

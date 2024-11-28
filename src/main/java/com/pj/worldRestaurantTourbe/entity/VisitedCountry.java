@@ -2,9 +2,9 @@ package com.pj.worldRestaurantTourbe.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.pj.worldRestaurantTourbe.utils.BooleanDeserializer;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class VisitedCountry {
 
     private int id;
