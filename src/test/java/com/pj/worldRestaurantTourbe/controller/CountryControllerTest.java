@@ -2,16 +2,13 @@ package com.pj.worldRestaurantTourbe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pj.worldRestaurantTourbe.entity.Countries;
-import com.pj.worldRestaurantTourbe.entity.NextCountry;
 import com.pj.worldRestaurantTourbe.entity.VisitedCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -78,14 +75,7 @@ public class CountryControllerTest {
     @Test
     @DisplayName("getNextCountry")
     public void getNextCountryHttpRequest() throws Exception {
-        Countries country = new Countries();
-        country.setId(2);
-        country.setName("korea");
-        country.setNext(true);
-        country.setCompleted(false);
-
-        entityManager.persist(country);
-        entityManager.flush();
+        insertSecondRecord();
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/country/nextCountry")
                         .param("next", "true"))
@@ -101,13 +91,10 @@ public class CountryControllerTest {
         List<Countries> nextCountries = countryService.getNextCountry(true);
         assertEquals(0, nextCountries.size());
 
-        NextCountry nextCountry = new NextCountry();
-        nextCountry.setId(1);
-        nextCountry.setNext(true);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/country/decideNextCountry")
                         .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(nextCountry)))
+                .content("1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.id", is(1)))
@@ -117,6 +104,28 @@ public class CountryControllerTest {
 
         nextCountries = countryService.getNextCountry(true);
         assertEquals(1, nextCountries.size());
+    }
+
+    @Test
+    @DisplayName("resetNextCountry")
+    public void resetNextCountryHttpRequest() throws Exception {
+        insertSecondRecord();
+
+        List<Countries> nextCountries = countryService.getNextCountry(true);
+        assertEquals(1, nextCountries.size());
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/resetNextCountry")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", is(2)))
+                .andExpect(jsonPath("$.name", is("korea")))
+                .andExpect(jsonPath("$.next", is(false)))
+                .andExpect(jsonPath("$.completed", is(false)));
+
+        nextCountries = countryService.getNextCountry(true);
+        assertEquals(0, nextCountries.size());
     }
 
     @Test
@@ -136,5 +145,16 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.name", is("japan")))
                 .andExpect(jsonPath("$.next", is(false)))
                 .andExpect(jsonPath("$.completed", is(true)));
+    }
+
+    private void insertSecondRecord() {
+        Countries country = new Countries();
+        country.setId(2);
+        country.setName("korea");
+        country.setNext(true);
+        country.setCompleted(false);
+
+        entityManager.persist(country);
+        entityManager.flush();
     }
 }

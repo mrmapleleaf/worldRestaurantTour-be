@@ -27,15 +27,15 @@ public class CountryController {
     }
 
     @PutMapping("/decideNextCountry")
-    public Countries decideNextCountry(@RequestBody NextCountry nextCountry) {
+    public Countries decideNextCountry(@RequestBody int id) {
 
-        return countryService.setNextCountry(nextCountry.getId());
+        return countryService.setNextCountry(id);
     }
 
     @PutMapping("/resetNextCountry")
-    public Countries resetNextCountry(@RequestBody NextCountry nextCountry) {
+    public Countries resetNextCountry(@RequestBody int id) {
 
-        return countryService.unsetNextCountry(nextCountry.getId());
+        return countryService.unsetNextCountry(id);
     }
 
     @PutMapping("/makeChosenCountryCompleted")
