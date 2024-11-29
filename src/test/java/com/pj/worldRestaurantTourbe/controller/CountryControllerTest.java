@@ -1,11 +1,13 @@
 package com.pj.worldRestaurantTourbe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pj.worldRestaurantTourbe.entity.Countries;
-import com.pj.worldRestaurantTourbe.entity.VisitedCountry;
+import com.pj.worldRestaurantTourbe.type.entity.Countries;
+import com.pj.worldRestaurantTourbe.type.entity.VisitedCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
+import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,9 @@ public class CountryControllerTest {
 
     @Value("${sql.script.create.country}")
     private String sqlAddCountry;
+
+    @Value("${sql.script.delete.country}")
+    private String sqlDeleteAddedCountry;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -91,10 +96,12 @@ public class CountryControllerTest {
         List<Countries> nextCountries = countryService.getNextCountry(true);
         assertEquals(0, nextCountries.size());
 
+        NextCountryForm nextCountryForm = new NextCountryForm();
+        nextCountryForm.setId(1);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/country/decideNextCountry")
                         .contentType(MediaType.APPLICATION_JSON)
-                .content("1"))
+                .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.id", is(1)))
@@ -114,9 +121,12 @@ public class CountryControllerTest {
         List<Countries> nextCountries = countryService.getNextCountry(true);
         assertEquals(1, nextCountries.size());
 
+        NextCountryForm nextCountryForm = new NextCountryForm();
+        nextCountryForm.setId(2);
+
         this.mockMvc.perform(MockMvcRequestBuilders.put("/country/resetNextCountry")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("2"))
+                        .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.id", is(2)))
@@ -156,5 +166,10 @@ public class CountryControllerTest {
 
         entityManager.persist(country);
         entityManager.flush();
+    }
+
+    @AfterEach
+    public void cleanDatabase() {
+        jdbc.execute(sqlDeleteAddedCountry);
     }
 }

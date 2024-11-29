@@ -1,6 +1,6 @@
 package com.pj.worldRestaurantTourbe.repository;
 
-import com.pj.worldRestaurantTourbe.entity.Countries;
+import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.pj.worldRestaurantTourbe.entity;
+package com.pj.worldRestaurantTourbe.type.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "restaurants")
-public class Restaurants {
+@Table(name = "countries")
+public class Countries {
 
     @Id
     private int id;
@@ -18,15 +18,15 @@ public class Restaurants {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "thoughts")
-    private String thoughts;
-
-    @Column(name = "url")
-    private String url;
+    @Column(name = "next")
+    private boolean next;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    private Countries countries;
+    @JoinColumn(name = "restaurant_id")
+    private Restaurants restaurants;
+
+    @Column(name = "completed")
+    private boolean completed;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;

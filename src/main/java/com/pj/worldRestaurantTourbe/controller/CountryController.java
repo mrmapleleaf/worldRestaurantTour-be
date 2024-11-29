@@ -1,9 +1,9 @@
 package com.pj.worldRestaurantTourbe.controller;
 
-import com.pj.worldRestaurantTourbe.entity.Countries;
-import com.pj.worldRestaurantTourbe.entity.NextCountry;
-import com.pj.worldRestaurantTourbe.entity.VisitedCountry;
+import com.pj.worldRestaurantTourbe.type.entity.Countries;
+import com.pj.worldRestaurantTourbe.type.entity.VisitedCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
+import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +27,15 @@ public class CountryController {
     }
 
     @PutMapping("/decideNextCountry")
-    public Countries decideNextCountry(@RequestBody int id) {
+    public Countries decideNextCountry(@RequestBody NextCountryForm nextCountryForm) {
 
-        return countryService.setNextCountry(id);
+        return countryService.setNextCountry(nextCountryForm.getId());
     }
 
     @PutMapping("/resetNextCountry")
-    public Countries resetNextCountry(@RequestBody int id) {
+    public Countries resetNextCountry(@RequestBody NextCountryForm nextCountryForm) {
 
-        return countryService.unsetNextCountry(id);
+        return countryService.unsetNextCountry(nextCountryForm.getId());
     }
 
     @PutMapping("/makeChosenCountryCompleted")
