@@ -122,8 +122,8 @@ class CountryServiceTest {
     }
 
     @Test
-    @DisplayName("success updating completed")
-    public void testUpdateCompleted_whenCountryExists_updateToTrue() {
+    @DisplayName("success setting completed")
+    public void testUpdateCompletedWhenCountryExistsUpdateToTrue() {
         long id = 1L;
         boolean isNext = false;
         boolean completed = true;
