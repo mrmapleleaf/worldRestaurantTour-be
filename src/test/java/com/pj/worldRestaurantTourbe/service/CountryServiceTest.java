@@ -64,29 +64,54 @@ class CountryServiceTest {
     }
 
     @Test
-    @DisplayName("success updating next country")
-    public void testUpdateIsNext_whenCountryExists_updateToTrue() {
+    @DisplayName("success setting next country")
+    public void testSetNextCountryWhenCountryExists() {
         long id = 1L;
-        boolean isNext = true;
 
         doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
 
-        assertNotNull(countryService.updateIsNext(id, isNext), "country should not be null");
+        assertNotNull(countryService.setNextCountry(id), "country should not be null");
         assertTrue(country.isNext());
         assertNotNull(country.getUpdated_at());
         verify(countryRepository, times(1)).save(country);
     }
 
     @Test
-    @DisplayName("fail updating next country")
-    public void testUpdateIsNext_whenCountryDoesNotExist_throwException() {
+    @DisplayName("fail setting next country")
+    public void testSetNextCountryWhenCountryDoesNotExistThrowException() {
         long id = 999L;
         boolean isNext = false;
 
         doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
-        assertThrows(RuntimeException.class, () -> { countryService.updateIsNext(id, true);});
+        assertThrows(RuntimeException.class, () -> { countryService.setNextCountry(id);});
         assertFalse(country.isNext());
+    }
+
+    @Test
+    @DisplayName("success unsetting next country")
+    public void testUnsetNextCountryWhenCountryExists() {
+        long id = 1L;
+        country.setNext(true);
+
+        doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
+
+        assertNotNull(countryService.unsetNextCountry(id), "country should not be null");
+        assertFalse(country.isNext());
+        assertNotNull(country.getUpdated_at());
+        verify(countryRepository, times(1)).save(country);
+    }
+
+    @Test
+    @DisplayName("fail unsetting next country")
+    public void testUnsetNextCountryWhenCountryDoesNotExistThrowException() {
+        long id = 999L;
+        country.setNext(true);
+
+        doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
+
+        assertThrows(RuntimeException.class, () -> { countryService.unsetNextCountry(id);});
+        assertTrue(country.isNext());
     }
 
     @Test

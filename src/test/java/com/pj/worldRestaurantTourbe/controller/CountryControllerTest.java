@@ -95,8 +95,8 @@ public class CountryControllerTest {
     }
 
     @Test
-    @DisplayName("changeNextCountry")
-    public void changeNextCountryHttpRequest() throws Exception {
+    @DisplayName("decideNextCountry")
+    public void decideNextCountryHttpRequest() throws Exception {
 
         List<Countries> nextCountries = countryService.getNextCountry(true);
         assertEquals(0, nextCountries.size());
@@ -105,7 +105,7 @@ public class CountryControllerTest {
         nextCountry.setId(1);
         nextCountry.setNext(true);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/changeNextCountry")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/decideNextCountry")
                         .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(nextCountry)))
                 .andExpect(status().isOk())

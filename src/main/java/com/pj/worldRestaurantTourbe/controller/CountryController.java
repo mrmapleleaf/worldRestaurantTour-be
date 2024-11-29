@@ -26,10 +26,16 @@ public class CountryController {
         return countryService.getNextCountry(next);
     }
 
-    @PutMapping("/changeNextCountry")
-    public Countries changeNextCountry(@RequestBody NextCountry nextCountry) {
+    @PutMapping("/decideNextCountry")
+    public Countries decideNextCountry(@RequestBody NextCountry nextCountry) {
 
-        return countryService.updateIsNext(nextCountry.getId(), nextCountry.isNext());
+        return countryService.setNextCountry(nextCountry.getId());
+    }
+
+    @PutMapping("/resetNextCountry")
+    public Countries resetNextCountry(@RequestBody NextCountry nextCountry) {
+
+        return countryService.unsetNextCountry(nextCountry.getId());
     }
 
     @PutMapping("/makeChosenCountryCompleted")

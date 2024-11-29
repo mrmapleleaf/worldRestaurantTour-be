@@ -24,13 +24,30 @@ public class CountryService {
     }
 
     @Transactional
-    public Countries updateIsNext(long id, boolean next) {
+    public Countries setNextCountry(long id) {
+
+        List<Countries> countries = countryRepository.findByNextIs(true);
+        if (!countries.isEmpty()) {
+            throw new RuntimeException("次に行く国がすでに存在しています");
+        }
 
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
 
-        targetCountry.setNext(next);
+        targetCountry.setNext(true);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
+        countryRepository.save(targetCountry);
+
+        return targetCountry;
+    }
+
+    @Transactional
+    public Countries unsetNextCountry(long id) {
+
+        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
+
+        targetCountry.setNext(false);
+        targetCountry.setUpdated_at(LocalDateTime.now());
         countryRepository.save(targetCountry);
 
         return targetCountry;
