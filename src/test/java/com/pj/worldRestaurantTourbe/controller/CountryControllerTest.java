@@ -2,9 +2,9 @@ package com.pj.worldRestaurantTourbe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
-import com.pj.worldRestaurantTourbe.type.entity.VisitedCountry;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
+import com.pj.worldRestaurantTourbe.type.form.VisitedCountryForm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.AfterEach;
@@ -139,17 +139,15 @@ public class CountryControllerTest {
     }
 
     @Test
-    @DisplayName("makeChosenCountryCompleted")
-    public void makeChosenCountryCompletedHttpRequest() throws Exception {
+    @DisplayName("setCompleted")
+    public void setCompletedHttpRequest() throws Exception {
 
-        VisitedCountry visitedCountry = new VisitedCountry();
-        visitedCountry.setId(1);
-        visitedCountry.setNext(false);
-        visitedCountry.setCompleted(true);
+        VisitedCountryForm visitedCountryForm = new VisitedCountryForm();
+        visitedCountryForm.setId(1);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/makeChosenCountryCompleted")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/country/setCompleted")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(visitedCountry)))
+                .content(objectMapper.writeValueAsString(visitedCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("japan")))

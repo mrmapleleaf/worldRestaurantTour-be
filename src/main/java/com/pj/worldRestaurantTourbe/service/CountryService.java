@@ -54,12 +54,12 @@ public class CountryService {
     }
 
     @Transactional
-    public Countries updateCompleted(long id, boolean next, boolean completed) {
+    public Countries setCompleted(long id) {
 
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
 
-        targetCountry.setNext(next);
-        targetCountry.setCompleted(completed);
+        targetCountry.setNext(false);
+        targetCountry.setCompleted(true);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
         countryRepository.save(targetCountry);

@@ -131,7 +131,7 @@ class CountryServiceTest {
         ReflectionTestUtils.setField(country, "next", true);
         doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
 
-        assertNotNull(countryService.updateCompleted(id, isNext, completed), "country should not be null");
+        assertNotNull(countryService.setCompleted(id), "country should not be null");
         assertFalse(country.isNext());
         assertTrue(country.isCompleted());
         assertNotNull(country.getUpdated_at());
@@ -148,7 +148,7 @@ class CountryServiceTest {
         ReflectionTestUtils.setField(country, "next", true);
         doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
-        assertThrows(RuntimeException.class, () -> { countryService.updateCompleted(id, isNext, completed);});
+        assertThrows(RuntimeException.class, () -> { countryService.setCompleted(id);});
         assertTrue(country.isNext());
         assertFalse(country.isCompleted());
         assertNull(country.getUpdated_at());
