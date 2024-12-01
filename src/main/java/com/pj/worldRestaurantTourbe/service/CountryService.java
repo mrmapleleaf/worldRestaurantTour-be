@@ -2,6 +2,7 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
+import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,16 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public List<Countries> getAllCountries() {
-        return countryRepository.findAll();
+    public AllCountriesIndexResponce getAllCountries() {
+
+        // fetch all countries
+        List<Countries> AllCountries = countryRepository.findAll();
+
+        // prepare responce
+        AllCountriesIndexResponce responce = new AllCountriesIndexResponce();
+        responce.setCountries(AllCountries);
+
+        return responce;
     }
 
     public List<Countries> getNextCountry(boolean next) {

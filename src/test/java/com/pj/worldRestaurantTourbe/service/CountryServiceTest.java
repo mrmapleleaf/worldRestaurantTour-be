@@ -2,6 +2,7 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
+import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -49,10 +51,9 @@ class CountryServiceTest {
     @DisplayName("get all countries")
     public void getAllCountriesTest() {
 
-        // when(countryRepository.findAll()).thenReturn(new ArrayList<>(Collections.singletonList(country)));
         doReturn(new ArrayList<>(Collections.singletonList(country))).when(countryRepository).findAll();
 
-        assertNotNull(countryService.getAllCountries(), "country should not be null");
+        assertNotNull(countryService.getAllCountries().getCountries(), "country should not be null");
         verify(countryRepository, times(1)).findAll();
     }
 
