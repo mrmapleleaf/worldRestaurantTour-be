@@ -148,10 +148,10 @@ public class CountryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(visitedCountryForm)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("japan")))
-                .andExpect(jsonPath("$.next", is(false)))
-                .andExpect(jsonPath("$.completed", is(true)));
+                .andExpect(jsonPath("$.country.id", is(1)))
+                .andExpect(jsonPath("$.country.name", is("japan")))
+                .andExpect(jsonPath("$.country.next", is(false)))
+                .andExpect(jsonPath("$.country.completed", is(true)));
     }
 
     private void insertSecondRecord() {

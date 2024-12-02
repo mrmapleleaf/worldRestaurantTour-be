@@ -47,7 +47,7 @@ public class CountryController {
     }
 
     @PutMapping("/setCompleted")
-    public Countries setCompleted(@RequestBody VisitedCountryForm visitedCountry) {
+    public CountryResponse setCompleted(@RequestBody VisitedCountryForm visitedCountry) {
 
         return countryService.setCompleted(visitedCountry.getId());
     }

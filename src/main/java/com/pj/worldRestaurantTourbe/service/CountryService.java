@@ -85,16 +85,21 @@ public class CountryService {
     }
 
     @Transactional
-    public Countries setCompleted(long id) {
+    public CountryResponse setCompleted(long id) {
 
+        // fetch target country
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
-
         targetCountry.setNext(false);
         targetCountry.setCompleted(true);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
+        // set country completed
         countryRepository.save(targetCountry);
 
-        return targetCountry;
+        // prepare response
+        CountryResponse response = new CountryResponse();
+        response.setCountry(targetCountry);
+
+        return response;
     }
 }
