@@ -5,6 +5,7 @@ import com.pj.worldRestaurantTourbe.service.CountryService;
 import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import com.pj.worldRestaurantTourbe.type.form.VisitedCountryForm;
 import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
+import com.pj.worldRestaurantTourbe.type.response.NextCountryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +29,7 @@ public class CountryController {
     }
 
     @GetMapping("/nextCountry")
-    public List<Countries> getNextCountry(@RequestParam boolean next) {
+    public NextCountryResponse getNextCountry(@RequestParam boolean next) {
         return countryService.getNextCountry(next);
     }
 

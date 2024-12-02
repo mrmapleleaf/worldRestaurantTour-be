@@ -5,6 +5,7 @@ import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import com.pj.worldRestaurantTourbe.type.form.VisitedCountryForm;
+import com.pj.worldRestaurantTourbe.type.response.NextCountryResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.AfterEach;
@@ -22,8 +23,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -74,7 +73,7 @@ public class CountryControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/country/allCountries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$.countries", hasSize(1)));
     }
 
     @Test
@@ -86,15 +85,15 @@ public class CountryControllerTest {
                         .param("next", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$.nextCountry", hasSize(1)));
     }
 
     @Test
     @DisplayName("decideNextCountry")
     public void decideNextCountryHttpRequest() throws Exception {
 
-        List<Countries> nextCountries = countryService.getNextCountry(true);
-        assertEquals(0, nextCountries.size());
+        NextCountryResponse response = countryService.getNextCountry(true);
+        assertEquals(0, response.getNextCountry().size());
 
         NextCountryForm nextCountryForm = new NextCountryForm();
         nextCountryForm.setId(1);
@@ -109,8 +108,8 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.next", is(true)))
                 .andExpect(jsonPath("$.completed", is(false)));
 
-        nextCountries = countryService.getNextCountry(true);
-        assertEquals(1, nextCountries.size());
+        NextCountryResponse nextCountries = countryService.getNextCountry(true);
+        assertEquals(1, nextCountries.getNextCountry().size());
     }
 
     @Test
@@ -118,8 +117,8 @@ public class CountryControllerTest {
     public void resetNextCountryHttpRequest() throws Exception {
         insertSecondRecord();
 
-        List<Countries> nextCountries = countryService.getNextCountry(true);
-        assertEquals(1, nextCountries.size());
+        NextCountryResponse nextCountries = countryService.getNextCountry(true);
+        assertEquals(1, nextCountries.getNextCountry().size());
 
         NextCountryForm nextCountryForm = new NextCountryForm();
         nextCountryForm.setId(2);
@@ -135,7 +134,7 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.completed", is(false)));
 
         nextCountries = countryService.getNextCountry(true);
-        assertEquals(0, nextCountries.size());
+        assertEquals(0, nextCountries.getNextCountry().size());
     }
 
     @Test
