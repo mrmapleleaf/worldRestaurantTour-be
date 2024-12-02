@@ -41,7 +41,7 @@ public class CountryController {
     }
 
     @PutMapping("/resetNextCountry")
-    public Countries resetNextCountry(@RequestBody NextCountryForm nextCountryForm) {
+    public CountryResponse resetNextCountry(@RequestBody NextCountryForm nextCountryForm) {
 
         return countryService.unsetNextCountry(nextCountryForm.getId());
     }
