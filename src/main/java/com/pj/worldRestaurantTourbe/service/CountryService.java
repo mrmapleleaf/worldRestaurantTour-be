@@ -2,6 +2,7 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
+import com.pj.worldRestaurantTourbe.type.error.CountryNotFoundException;
 import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
 import com.pj.worldRestaurantTourbe.type.response.CountryResponse;
 import com.pj.worldRestaurantTourbe.type.response.NextCountryResponse;
@@ -52,7 +53,7 @@ public class CountryService {
         }
 
         // fetch target country
-        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
+        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException("更新対象の国が存在しません"));
         targetCountry.setNext(true);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
@@ -70,7 +71,7 @@ public class CountryService {
     public CountryResponse unsetNextCountry(long id) {
 
         // fetch target country
-        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
+        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException("更新対象の国が存在しません"));
         targetCountry.setNext(false);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
@@ -88,7 +89,7 @@ public class CountryService {
     public CountryResponse setCompleted(long id) {
 
         // fetch target country
-        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
+        Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException("更新対象の国が存在しません"));
         targetCountry.setNext(false);
         targetCountry.setCompleted(true);
         targetCountry.setUpdated_at(LocalDateTime.now());

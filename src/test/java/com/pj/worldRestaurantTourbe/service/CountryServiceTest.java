@@ -2,6 +2,7 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
+import com.pj.worldRestaurantTourbe.type.error.CountryNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,9 +89,9 @@ class CountryServiceTest {
         long id = 999L;
         boolean isNext = false;
 
-        doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
+        doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
-        assertThrows(RuntimeException.class, () -> { countryService.setNextCountry(id);});
+        assertThrows(CountryNotFoundException.class, () -> { countryService.setNextCountry(id);});
         assertFalse(country.isNext());
     }
 
@@ -114,9 +115,9 @@ class CountryServiceTest {
         long id = 999L;
         country.setNext(true);
 
-        doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
+        doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
-        assertThrows(RuntimeException.class, () -> { countryService.unsetNextCountry(id);});
+        assertThrows(CountryNotFoundException.class, () -> { countryService.unsetNextCountry(id);});
         assertTrue(country.isNext());
     }
 
@@ -145,9 +146,9 @@ class CountryServiceTest {
         boolean completed = true;
 
         ReflectionTestUtils.setField(country, "next", true);
-        doThrow(new RuntimeException("更新対象の国が存在しません")).when(countryRepository).findById(id);
+        doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
-        assertThrows(RuntimeException.class, () -> { countryService.setCompleted(id);});
+        assertThrows(CountryNotFoundException.class, () -> { countryService.setCompleted(id);});
         assertTrue(country.isNext());
         assertFalse(country.isCompleted());
         assertNull(country.getUpdated_at());
