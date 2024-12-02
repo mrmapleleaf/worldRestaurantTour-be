@@ -5,6 +5,7 @@ import com.pj.worldRestaurantTourbe.service.CountryService;
 import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import com.pj.worldRestaurantTourbe.type.form.VisitedCountryForm;
 import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
+import com.pj.worldRestaurantTourbe.type.response.CountryResponse;
 import com.pj.worldRestaurantTourbe.type.response.NextCountryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class CountryController {
     }
 
     @PutMapping("/decideNextCountry")
-    public Countries decideNextCountry(@RequestBody NextCountryForm nextCountryForm) {
+    public CountryResponse decideNextCountry(@RequestBody NextCountryForm nextCountryForm) {
 
         return countryService.setNextCountry(nextCountryForm.getId());
     }

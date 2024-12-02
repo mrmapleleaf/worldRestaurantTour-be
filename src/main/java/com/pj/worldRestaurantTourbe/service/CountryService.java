@@ -3,6 +3,7 @@ package com.pj.worldRestaurantTourbe.service;
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
 import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
+import com.pj.worldRestaurantTourbe.type.response.CountryResponse;
 import com.pj.worldRestaurantTourbe.type.response.NextCountryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,21 +43,27 @@ public class CountryService {
     }
 
     @Transactional
-    public Countries setNextCountry(long id) {
+    public CountryResponse setNextCountry(long id) {
 
+        // check If next country already exists
         List<Countries> countries = countryRepository.findByNextIs(true);
         if (!countries.isEmpty()) {
             throw new RuntimeException("次に行く国がすでに存在しています");
         }
 
+        // fetch target country
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new RuntimeException("更新対象の国が存在しません"));
-
         targetCountry.setNext(true);
         targetCountry.setUpdated_at(LocalDateTime.now());
 
+        // set next country
         countryRepository.save(targetCountry);
 
-        return targetCountry;
+        // prepare response
+        CountryResponse response = new CountryResponse();
+        response.setCountry(targetCountry);
+
+        return response;
     }
 
     @Transactional

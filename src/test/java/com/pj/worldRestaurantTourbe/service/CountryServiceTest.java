@@ -2,7 +2,6 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
-import com.pj.worldRestaurantTourbe.type.response.AllCountriesIndexResponce;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

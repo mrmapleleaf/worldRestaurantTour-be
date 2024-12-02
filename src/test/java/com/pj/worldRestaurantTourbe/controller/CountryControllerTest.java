@@ -103,10 +103,10 @@ public class CountryControllerTest {
                 .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("japan")))
-                .andExpect(jsonPath("$.next", is(true)))
-                .andExpect(jsonPath("$.completed", is(false)));
+                .andExpect(jsonPath("$.country.id", is(1)))
+                .andExpect(jsonPath("$.country.name", is("japan")))
+                .andExpect(jsonPath("$.country.next", is(true)))
+                .andExpect(jsonPath("$.country.completed", is(false)));
 
         NextCountryResponse nextCountries = countryService.getNextCountry(true);
         assertEquals(1, nextCountries.getNextCountry().size());
