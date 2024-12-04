@@ -87,7 +87,6 @@ class CountryServiceTest {
     @DisplayName("fail setting next country")
     public void testSetNextCountryWhenCountryDoesNotExistThrowException() {
         long id = 999L;
-        boolean isNext = false;
 
         doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
@@ -125,8 +124,6 @@ class CountryServiceTest {
     @DisplayName("success setting completed")
     public void testUpdateCompletedWhenCountryExistsUpdateToTrue() {
         long id = 1L;
-        boolean isNext = false;
-        boolean completed = true;
 
         ReflectionTestUtils.setField(country, "next", true);
         doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
@@ -142,8 +139,6 @@ class CountryServiceTest {
     @DisplayName("fail updating completed")
     public void testUpdateCompleted_whenCountryDoesNotExist_throwException() {
         long id = 999L;
-        boolean isNext = false;
-        boolean completed = true;
 
         ReflectionTestUtils.setField(country, "next", true);
         doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
