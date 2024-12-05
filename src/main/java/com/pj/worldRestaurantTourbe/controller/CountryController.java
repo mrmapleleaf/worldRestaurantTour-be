@@ -1,6 +1,5 @@
 package com.pj.worldRestaurantTourbe.controller;
 
-import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.service.CountryService;
 import com.pj.worldRestaurantTourbe.type.form.NextCountryForm;
 import com.pj.worldRestaurantTourbe.type.form.VisitedCountryForm;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/country")
