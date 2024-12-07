@@ -6,10 +6,13 @@ import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.type.entity.Restaurants;
 import com.pj.worldRestaurantTourbe.type.error.CountryNotFoundException;
 import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
+import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -40,6 +43,19 @@ public class RestaurantService {
         // prepare response
         RestaurantResponse response = new RestaurantResponse();
         response.setRestaurant(restautants);
+
+        return response;
+    }
+
+
+    public RestaurantDetailResponse detail(long id) {
+
+        // fetch Restaurant detail
+        Restaurants restaurant = restaurantRepository.findByCountriesId(id);
+
+        // prepare response
+        RestaurantDetailResponse response = new RestaurantDetailResponse();
+        response.setResponse(restaurant);
 
         return response;
     }
