@@ -27,5 +27,4 @@ public class Restaurants extends AbstractEntity{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Countries countries;
-
 }
