@@ -21,10 +21,6 @@ public class Countries extends AbstractEntity{
     @Column(name = "next")
     private boolean next;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
-    private Restaurants restaurants;
-
     @Column(name = "completed")
     private boolean completed;
 
