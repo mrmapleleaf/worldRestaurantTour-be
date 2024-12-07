@@ -59,4 +59,8 @@ public class RestaurantService {
 
         return response;
     }
+
+    public RestaurantResponse delete(long id) {
+        return null;
+    }
 }
