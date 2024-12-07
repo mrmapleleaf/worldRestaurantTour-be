@@ -3,9 +3,9 @@ package com.pj.worldRestaurantTourbe.type.form;
 import lombok.Data;
 
 @Data
-public class CompletedRestaurtFrom {
+public class CompletedRestaurantFrom {
 
-    private int id;
+    private long countryId;
 
     private String name;
 

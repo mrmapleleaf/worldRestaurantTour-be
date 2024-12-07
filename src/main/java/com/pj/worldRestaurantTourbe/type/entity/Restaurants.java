@@ -28,9 +28,15 @@ public class Restaurants {
     @JoinColumn(name = "country_id")
     private Countries countries;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "datetime DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime created_at;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", columnDefinition = "datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updated_at;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreated_at(LocalDateTime.now());
+        this.setUpdated_at(LocalDateTime.now());
+    }
 }

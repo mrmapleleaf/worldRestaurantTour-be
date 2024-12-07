@@ -1,7 +1,7 @@
 package com.pj.worldRestaurantTourbe.controller;
 
 import com.pj.worldRestaurantTourbe.service.RestaurantService;
-import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurtFrom;
+import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @PostMapping(value = "/register")
-    public RestaurantResponse register(@RequestBody CompletedRestaurtFrom form) {
-        return null;
+    public RestaurantResponse register(@RequestBody CompletedRestaurantFrom form) {
+        return restaurantService.register(form);
     }
 }
