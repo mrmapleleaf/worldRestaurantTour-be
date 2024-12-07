@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "countries")
-public class Countries {
+public class Countries extends AbstractEntity{
 
     @Id
     private int id;
@@ -28,9 +28,4 @@ public class Countries {
     @Column(name = "completed")
     private boolean completed;
 
-    @Column(name = "created_at")
-    private LocalDateTime created_at;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updated_at;
 }
