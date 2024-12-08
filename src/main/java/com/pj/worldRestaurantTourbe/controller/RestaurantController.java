@@ -1,7 +1,6 @@
 package com.pj.worldRestaurantTourbe.controller;
 
 import com.pj.worldRestaurantTourbe.service.RestaurantService;
-import com.pj.worldRestaurantTourbe.type.entity.Restaurants;
 import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
@@ -33,6 +32,6 @@ public class RestaurantController {
 
     @DeleteMapping(value = "/delete/{id}")
     public RestaurantResponse delete(@PathVariable(name = "id") long id) {
-        return null;
+        return restaurantService.delete(id);
     }
 }

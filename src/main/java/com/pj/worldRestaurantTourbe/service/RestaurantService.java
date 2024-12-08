@@ -5,6 +5,7 @@ import com.pj.worldRestaurantTourbe.repository.RestaurantRepository;
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.type.entity.Restaurants;
 import com.pj.worldRestaurantTourbe.type.error.CountryNotFoundException;
+import com.pj.worldRestaurantTourbe.type.error.RestaurantNotFoundException;
 import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
@@ -61,6 +62,18 @@ public class RestaurantService {
     }
 
     public RestaurantResponse delete(long id) {
-        return null;
+
+        // fetch delete target
+        Restaurants restaurants = restaurantRepository.findById(id).orElseThrow(() ->
+                new RestaurantNotFoundException("対象のレストランが見つかりません"));
+
+        // delete target
+        restaurantRepository.delete(restaurants);
+
+        // prepare response
+        RestaurantResponse response = new RestaurantResponse();
+        response.setRestaurant(restaurants);
+
+        return response;
     }
 }

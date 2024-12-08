@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class RestaurantDetailResponse {
 
-    public Restaurants response;
+    private Restaurants response;
 }
