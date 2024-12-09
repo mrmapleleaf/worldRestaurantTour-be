@@ -115,7 +115,18 @@ public class RestaurantServiceTest {
         public void testGetRestaurantDetailWhenTargetRestaurantDoesNotExistThrowException() {
 
             // prepare test date
+            int id = 999;
 
+            // set mock
+            when(restaurantRepositoryMock.findById(id)).thenThrow(
+                    new RestaurantNotFoundException("対象のレストランが見つかりません")
+            );
+
+            // execute target method and assert result
+            assertThrows(RestaurantNotFoundException.class, () -> {
+                    restaurantService.detail(999);
+                }
+            );
         }
     }
 

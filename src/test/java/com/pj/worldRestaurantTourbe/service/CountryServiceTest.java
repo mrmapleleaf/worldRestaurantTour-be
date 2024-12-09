@@ -72,9 +72,9 @@ class CountryServiceTest {
     @Test
     @DisplayName("success setting next country")
     public void testSetNextCountryWhenCountryExists() {
-        long id = 1L;
+        int id = 1;
 
-        doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
+        doReturn(Optional.of(country)).when(countryRepository).findById((country.getId()));
 
         assertNotNull(countryService.setNextCountry(id), "country should not be null");
         assertTrue(country.isNext());
@@ -85,7 +85,7 @@ class CountryServiceTest {
     @Test
     @DisplayName("fail setting next country")
     public void testSetNextCountryWhenCountryDoesNotExistThrowException() {
-        long id = 999L;
+        int id = 999;
 
         doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
 
@@ -96,10 +96,10 @@ class CountryServiceTest {
     @Test
     @DisplayName("success unsetting next country")
     public void testUnsetNextCountryWhenCountryExists() {
-        long id = 1L;
+        int id = 1;
         country.setNext(true);
 
-        doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
+        doReturn(Optional.of(country)).when(countryRepository).findById(country.getId());
 
         assertNotNull(countryService.unsetNextCountry(id), "country should not be null");
         assertFalse(country.isNext());
@@ -110,7 +110,7 @@ class CountryServiceTest {
     @Test
     @DisplayName("fail unsetting next country")
     public void testUnsetNextCountryWhenCountryDoesNotExistThrowException() {
-        long id = 999L;
+        int id = 999;
         country.setNext(true);
 
         doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);
@@ -122,10 +122,10 @@ class CountryServiceTest {
     @Test
     @DisplayName("success setting completed")
     public void testUpdateCompletedWhenCountryExistsUpdateToTrue() {
-        long id = 1L;
+        int id = 1;
 
         ReflectionTestUtils.setField(country, "next", true);
-        doReturn(Optional.of(country)).when(countryRepository).findById((long)country.getId());
+        doReturn(Optional.of(country)).when(countryRepository).findById(country.getId());
 
         assertNotNull(countryService.setCompleted(id), "country should not be null");
         assertFalse(country.isNext());
@@ -137,7 +137,7 @@ class CountryServiceTest {
     @Test
     @DisplayName("fail updating completed")
     public void testUpdateCompleted_whenCountryDoesNotExist_throwException() {
-        long id = 999L;
+        int id = 999;
 
         ReflectionTestUtils.setField(country, "next", true);
         doThrow(new CountryNotFoundException("更新対象の国が存在しません")).when(countryRepository).findById(id);

@@ -44,7 +44,7 @@ public class CountryService {
     }
 
     @Transactional
-    public CountryResponse setNextCountry(long id) {
+    public CountryResponse setNextCountry(int id) {
 
         // check If next country already exists
         List<Countries> countries = countryRepository.findByNextIs(true);
@@ -68,7 +68,7 @@ public class CountryService {
     }
 
     @Transactional
-    public CountryResponse unsetNextCountry(long id) {
+    public CountryResponse unsetNextCountry(int id) {
 
         // fetch target country
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException("更新対象の国が存在しません"));
@@ -86,7 +86,7 @@ public class CountryService {
     }
 
     @Transactional
-    public CountryResponse setCompleted(long id) {
+    public CountryResponse setCompleted(int id) {
 
         // fetch target country
         Countries targetCountry = countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException("更新対象の国が存在しません"));

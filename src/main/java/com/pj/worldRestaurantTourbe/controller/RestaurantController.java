@@ -31,7 +31,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public RestaurantResponse delete(@PathVariable(name = "id") long id) {
+    public RestaurantResponse delete(@PathVariable(name = "id") int id) {
         return restaurantService.delete(id);
     }
 }
