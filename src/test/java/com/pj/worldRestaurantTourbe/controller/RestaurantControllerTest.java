@@ -35,27 +35,35 @@ public class RestaurantControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Value("${sql.script.create.country}")
-    private String sqlAddCountry;
+    @Value("${sql.script.create.country4}")
+    private String sqlAddCountry4;
+
+    @Value("${sql.script.create.country5}")
+    private String sqlAddCountry5;
 
     @Value("${sql.script.delete.country}")
-    private String sqlDeleteAddedCountry;
+    private String sqlDeleteCountry;
+
+    @Value("${sql.script.create.restaurant}")
+    private String sqlAddRestaurant;
 
     @Value("${sql.script.delete.restaurant}")
-    private String sqlDeleteAddedRestaurant;
+    private String sqlDeleteRestaurant;
 
     private static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
     @BeforeEach
     public void setupDatabase() {
-        jdbc.execute(sqlAddCountry);
+        jdbc.execute(sqlAddCountry4);
+        jdbc.execute(sqlAddCountry5);
+        jdbc.execute(sqlAddRestaurant);
     }
 
     @Test
-    @DisplayName("register")
+    @DisplayName("registerRestaurant")
     public void registerRestaurantHttpRequest() throws Exception{
         CompletedRestaurantFrom form = new CompletedRestaurantFrom();
-        form.setCountryId(1);
+        form.setCountryId(2);
         form.setName("レストラン");
         form.setThoughts("good");
         form.setUrl("http://sample.com");
@@ -68,12 +76,27 @@ public class RestaurantControllerTest {
                 .andExpect(jsonPath("$.restaurant.name", is("レストラン")))
                 .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
                 .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
-                .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
+                .andExpect(jsonPath("$.restaurant.countries.id", is(2)));
+    }
+
+    @Test
+    @DisplayName("getRestaurantDetail")
+    public void getRestaurantDetailHttpRequest() throws Exception {
+        int countryId = 1;
+
+       this.mockMvc.perform(MockMvcRequestBuilders.get("/restaurant/detail/{country}", countryId)
+               .contentType(APPLICATION_JSON_UTF8))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+               .andExpect(jsonPath("$.restaurant.name", is("restaurant")))
+               .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
+               .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
+               .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
     }
 
     @AfterEach
     public void deleteDatabase() {
-        jdbc.execute(sqlDeleteAddedCountry);
-        jdbc.execute(sqlDeleteAddedRestaurant);
+        jdbc.execute(sqlDeleteRestaurant);
+        jdbc.execute(sqlDeleteCountry);
     }
 }

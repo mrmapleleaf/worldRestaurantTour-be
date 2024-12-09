@@ -57,7 +57,7 @@ public class RestaurantService {
 
         // prepare response
         RestaurantDetailResponse response = new RestaurantDetailResponse();
-        response.setResponse(restaurant);
+        response.setRestaurant(restaurant);
 
         return response;
     }

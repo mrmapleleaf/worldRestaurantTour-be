@@ -39,11 +39,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class CountryControllerTest {
 
-    @Value("${sql.script.create.country}")
-    private String sqlAddCountry;
+    @Value("${sql.script.create.country1}")
+    private String sqlAddCountry1;
+
+    @Value("${sql.script.create.country2}")
+    private String sqlAddCountry2;
+
+    @Value("${sql.script.create.country3}")
+    private String sqlAddCountry3;
 
     @Value("${sql.script.delete.country}")
-    private String sqlDeleteAddedCountry;
+    private String sqlDeleteCountry;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -66,7 +72,9 @@ public class CountryControllerTest {
 
     @BeforeEach
     public void setupDatabase() {
-        jdbc.execute(sqlAddCountry);
+        jdbc.execute(sqlAddCountry1);
+        jdbc.execute(sqlAddCountry2);
+        jdbc.execute(sqlAddCountry3);
     }
 
     @Test
@@ -75,7 +83,7 @@ public class CountryControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/country/allCountries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.countries", hasSize(1)));
+                .andExpect(jsonPath("$.countries", hasSize(3)));
     }
 
     @Test
@@ -123,15 +131,15 @@ public class CountryControllerTest {
         assertEquals(1, nextCountries.getNextCountry().size());
 
         NextCountryForm nextCountryForm = new NextCountryForm();
-        nextCountryForm.setId(2);
+        nextCountryForm.setId(4);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/country/resetNextCountry")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.country.id", is(2)))
-                .andExpect(jsonPath("$.country.name", is("korea")))
+                .andExpect(jsonPath("$.country.id", is(4)))
+                .andExpect(jsonPath("$.country.name", is("india")))
                 .andExpect(jsonPath("$.country.next", is(false)))
                 .andExpect(jsonPath("$.country.completed", is(false)));
 
@@ -142,24 +150,25 @@ public class CountryControllerTest {
     @Test
     @DisplayName("setCompleted")
     public void setCompletedHttpRequest() throws Exception {
+        insertSecondRecord();
 
         VisitedCountryForm visitedCountryForm = new VisitedCountryForm();
-        visitedCountryForm.setId(1);
+        visitedCountryForm.setId(4);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/country/setCompleted")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(visitedCountryForm)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.country.id", is(1)))
-                .andExpect(jsonPath("$.country.name", is("japan")))
+                .andExpect(jsonPath("$.country.id", is(4)))
+                .andExpect(jsonPath("$.country.name", is("india")))
                 .andExpect(jsonPath("$.country.next", is(false)))
                 .andExpect(jsonPath("$.country.completed", is(true)));
     }
 
     private void insertSecondRecord() {
         Countries country = new Countries();
-        country.setId(2);
-        country.setName("korea");
+        country.setId(4);
+        country.setName("india");
         country.setNext(true);
         country.setCompleted(false);
 
@@ -169,6 +178,6 @@ public class CountryControllerTest {
 
     @AfterEach
     public void cleanDatabase() {
-        jdbc.execute(sqlDeleteAddedCountry);
+        jdbc.execute(sqlDeleteCountry);
     }
 }
