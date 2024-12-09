@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CompletedRestaurantFrom {
 
-    private long countryId;
+    private int countryId;
 
     private String name;
 

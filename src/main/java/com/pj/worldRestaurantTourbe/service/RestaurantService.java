@@ -47,10 +47,13 @@ public class RestaurantService {
     }
 
 
-    public RestaurantDetailResponse detail(long id) {
+    public RestaurantDetailResponse detail(int countryId) {
 
         // fetch Restaurant detail
-        Restaurants restaurant = restaurantRepository.findByCountriesId(id);
+        Restaurants restaurant = restaurantRepository.findByCountriesId(countryId);
+        if(restaurant == null) {
+            throw new RestaurantNotFoundException("対象のレストランが見つかりません");
+        }
 
         // prepare response
         RestaurantDetailResponse response = new RestaurantDetailResponse();
@@ -59,7 +62,7 @@ public class RestaurantService {
         return response;
     }
 
-    public RestaurantResponse delete(long id) {
+    public RestaurantResponse delete(int id) {
 
         // fetch delete target
         Restaurants restaurants = restaurantRepository.findById(id).orElseThrow(() ->

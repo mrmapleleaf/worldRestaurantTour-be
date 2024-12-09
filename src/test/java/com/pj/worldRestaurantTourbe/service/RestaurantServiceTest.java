@@ -6,6 +6,7 @@ import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.type.entity.Restaurants;
 import com.pj.worldRestaurantTourbe.type.error.RestaurantNotFoundException;
 import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
+import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,14 +80,41 @@ public class RestaurantServiceTest {
     @DisplayName("レストラン詳細取得")
     class GetRestaurant {
         @Test
-        @DisplayName("正常系")
+        @DisplayName("対象のレストランが存在する場合")
         public void testGetRestaurantDetailWhenTargetRestaurantExists() {
+
+            // prepare test data
+            int countryId = 1;
+
+            Restaurants restaurant = new Restaurants();
+            Countries country = new Countries();
+            country.setId(countryId);
+
+            Optional<Countries> countryOptional = Optional.of(country);
+            restaurant.setId(1);
+            restaurant.setName("レストラン");
+            restaurant.setCountries(countryOptional.get());
+            restaurant.setThoughts("good");
+            restaurant.setUrl("http://sample.com");
+
+            // set mock
+            when(restaurantRepositoryMock.findByCountriesId(countryId)).thenReturn(restaurant);
+
+            // execute target method
+            RestaurantDetailResponse response = restaurantService.detail(countryId);
+
+            // assert response
+            assertNotNull(response);
+            assertEquals(1, restaurant.getId());
+            assertEquals(1, restaurant.getCountries().getId());
 
         }
 
         @Test
-        @DisplayName("正常系")
+        @DisplayName("対象のレストランが存在しない場合")
         public void testGetRestaurantDetailWhenTargetRestaurantDoesNotExistThrowException() {
+
+            // prepare test date
 
         }
     }
@@ -96,7 +124,7 @@ public class RestaurantServiceTest {
     class DeleteRestaurant {
 
         @Test
-        @DisplayName("正常系")
+        @DisplayName("削除が成功する場合")
         public void deleteRestaurantWhenTargetRestaurantExists() {
 
             // prepare test data
@@ -110,7 +138,7 @@ public class RestaurantServiceTest {
             Optional<Restaurants> optionalRestaurant = Optional.of(targetRestaurant);
 
             // set mock
-            when(restaurantRepositoryMock.findById((long) id)).thenReturn(optionalRestaurant);
+            when(restaurantRepositoryMock.findById(id)).thenReturn(optionalRestaurant);
 
             // execute target method
             RestaurantResponse response = restaurantService.delete(id);
@@ -121,14 +149,14 @@ public class RestaurantServiceTest {
         }
 
         @Test
-        @DisplayName("正常系")
+        @DisplayName("削除対象のレストランが存在しない場合")
         public void testDeleteRestaurantWhenTargetRestaurantDoesNotExistThrowException() {
 
             // prepare test data
             int id = 999;
 
             // set mock
-            when(restaurantRepositoryMock.findById((long) id)).thenThrow(
+            when(restaurantRepositoryMock.findById(id)).thenThrow(
                     RestaurantNotFoundException.class
             );
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CountryRepository extends JpaRepository<Countries, Long>{
+public interface CountryRepository extends JpaRepository<Countries, Integer>{
 
     public List<Countries> findByNextIs(boolean next);
 }
