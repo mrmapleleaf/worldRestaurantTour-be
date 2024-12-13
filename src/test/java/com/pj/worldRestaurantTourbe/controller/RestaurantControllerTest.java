@@ -94,6 +94,13 @@ public class RestaurantControllerTest {
                .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
     }
 
+    @Test
+    @DisplayName("deleteRestaurant")
+    public void deleteRestaurantHttpRequest() throws Exception {
+
+
+    }
+
     @AfterEach
     public void deleteDatabase() {
         jdbc.execute(sqlDeleteRestaurant);

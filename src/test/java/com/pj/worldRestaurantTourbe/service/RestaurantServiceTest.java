@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = RestaurantService.class)
@@ -65,7 +66,7 @@ public class RestaurantServiceTest {
 
             // set mock
             when(countryRepositoryMock.findById(form.getCountryId())).thenReturn(countryOptional);
-            when(restaurantRepositoryMock.save(any())).thenReturn(restaurant);
+            when(restaurantRepositoryMock.save(restaurant)).thenReturn(restaurant);
 
             // execute target method
             RestaurantResponse response = restaurantService.register(form);
@@ -73,6 +74,10 @@ public class RestaurantServiceTest {
             // assert response
             assertEquals(form.getCountryId(), response.getRestaurant().getCountries().getId());
             assertEquals(form.getName(), response.getRestaurant().getName());
+
+            // verify method invocations
+            verify(countryRepositoryMock).findById(form.getCountryId());
+            verify(restaurantRepositoryMock).save(restaurant);
         }
     }
 
@@ -108,6 +113,8 @@ public class RestaurantServiceTest {
             assertEquals(1, restaurant.getId());
             assertEquals(1, restaurant.getCountries().getId());
 
+            // verify method invocation
+            verify(restaurantRepositoryMock).findByCountriesId(countryId);
         }
 
         @Test
@@ -115,18 +122,21 @@ public class RestaurantServiceTest {
         public void testGetRestaurantDetailWhenTargetRestaurantDoesNotExistThrowException() {
 
             // prepare test date
-            int id = 999;
+            int countryId = 999;
 
             // set mock
-            when(restaurantRepositoryMock.findById(id)).thenThrow(
+            when(restaurantRepositoryMock.findByCountriesId(countryId)).thenThrow(
                     new RestaurantNotFoundException("対象のレストランが見つかりません")
             );
 
             // execute target method and assert result
             assertThrows(RestaurantNotFoundException.class, () -> {
-                    restaurantService.detail(999);
+                    restaurantService.detail(countryId);
                 }
             );
+
+            // verify method invocation
+            verify(restaurantRepositoryMock).findByCountriesId(countryId);
         }
     }
 
@@ -157,6 +167,10 @@ public class RestaurantServiceTest {
             // assert response
             assertNotNull(response.getRestaurant());
             assertEquals(targetRestaurant.getId(), response.getRestaurant().getId());
+
+            // verify method invocation
+            verify(restaurantRepositoryMock).findById(id);
+            verify(restaurantRepositoryMock).delete(targetRestaurant);
         }
 
         @Test
@@ -173,6 +187,9 @@ public class RestaurantServiceTest {
 
             // execute target method and assert result
             assertThrows(RestaurantNotFoundException.class, () -> restaurantService.delete(id));
+
+            // verify method invocation
+            verify(restaurantRepositoryMock).findById(id);
         }
     }
 }
