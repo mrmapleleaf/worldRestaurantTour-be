@@ -97,8 +97,16 @@ public class RestaurantControllerTest {
     @Test
     @DisplayName("deleteRestaurant")
     public void deleteRestaurantHttpRequest() throws Exception {
+        int restaurantId = 1;
 
-
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/restaurant/delete/{restaurantId}", restaurantId)
+                        .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.restaurant.name", is("restaurant")))
+                .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
+                .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
+                .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
     }
 
     @AfterEach

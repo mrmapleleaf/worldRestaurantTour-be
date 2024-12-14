@@ -1,5 +1,6 @@
 package com.pj.worldRestaurantTourbe.type.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,5 +27,6 @@ public class Restaurants extends AbstractEntity{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Countries countries;
 }
