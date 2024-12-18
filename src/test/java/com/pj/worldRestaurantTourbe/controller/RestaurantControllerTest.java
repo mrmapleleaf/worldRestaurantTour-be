@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,6 +58,16 @@ public class RestaurantControllerTest {
         jdbc.execute(sqlAddCountry4);
         jdbc.execute(sqlAddCountry5);
         jdbc.execute(sqlAddRestaurant);
+    }
+
+    @Test
+    @DisplayName("getAllRestaurants")
+    public void getAllRestaurantsHttpRequest() throws Exception {
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/restaurant/allRestaurants"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.content", hasSize(1)));
     }
 
     @Test

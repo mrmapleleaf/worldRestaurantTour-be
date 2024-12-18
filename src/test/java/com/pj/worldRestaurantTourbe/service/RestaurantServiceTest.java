@@ -2,10 +2,12 @@ package com.pj.worldRestaurantTourbe.service;
 
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
 import com.pj.worldRestaurantTourbe.repository.RestaurantRepository;
+import com.pj.worldRestaurantTourbe.type.RestaurantItem;
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.type.entity.Restaurants;
 import com.pj.worldRestaurantTourbe.type.error.RestaurantNotFoundException;
 import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
+import com.pj.worldRestaurantTourbe.type.response.AllRestaurantsResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -16,11 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -169,7 +174,7 @@ public class RestaurantServiceTest {
 
             // verify method invocation
             verify(restaurantRepositoryMock).findById(id);
-            verify(restaurantRepositoryMock).delete(targetRestaurant);
+            verify(restaurantRepositoryMock).delete(argThat(x -> targetRestaurant.getId() == x.getId()));
         }
 
         @Test
@@ -189,6 +194,37 @@ public class RestaurantServiceTest {
 
             // verify method invocation
             verify(restaurantRepositoryMock).findById(id);
+        }
+    }
+
+    @Nested
+    @DisplayName("全レストラン取得")
+    class GetAllRestaurant {
+        @Test
+        @DisplayName("レストラン一覧取得が成功する場合")
+        public void testGetAllRestaurant() {
+
+            // prepare test data
+            Restaurants targetRestaurant = new Restaurants();
+            targetRestaurant.setId(1);
+            targetRestaurant.setName("レストラン");
+            targetRestaurant.setThoughts("good");
+            targetRestaurant.setUrl("http://sample.com");
+
+            List<Restaurants> restaurantsList = new ArrayList<>();
+            restaurantsList.add(targetRestaurant);
+
+            // set mock
+            when(restaurantRepositoryMock.findAll()).thenReturn(restaurantsList);
+
+            // execute target method
+            AllRestaurantsResponse response = restaurantService.getAllRestaurant();
+
+            // asser response
+            assertEquals(restaurantsList.size(), response.getContent().size());
+
+            // verify method invocations
+            verify(restaurantRepositoryMock).findAll();
         }
     }
 }
