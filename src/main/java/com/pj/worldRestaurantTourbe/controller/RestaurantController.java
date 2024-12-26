@@ -31,9 +31,9 @@ public class RestaurantController {
         return restaurantService.register(form);
     }
 
-    @GetMapping(value = "/detail/{countryId}")
-    public RestaurantDetailResponse detail(@PathVariable(name = "countryId") int countryId) {
-        return restaurantService.detail(countryId);
+    @GetMapping(value = "/detail/{id}")
+    public RestaurantDetailResponse detail(@PathVariable(name = "id") int id) {
+        return restaurantService.detail(id);
     }
 
     @DeleteMapping(value = "/delete/{id}")

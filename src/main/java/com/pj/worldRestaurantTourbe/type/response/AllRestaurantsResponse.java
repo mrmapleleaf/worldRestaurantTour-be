@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class AllRestaurantsResponse {
 
-    List<RestaurantItem> content;
+    List<RestaurantItem> contents;
 }

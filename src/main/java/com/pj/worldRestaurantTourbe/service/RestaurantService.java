@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -69,17 +70,17 @@ public class RestaurantService {
     }
 
 
-    public RestaurantDetailResponse detail(int countryId) {
+    public RestaurantDetailResponse detail(int id) {
 
         // fetch Restaurant detail
-        Restaurants restaurant = restaurantRepository.findByCountriesId(countryId);
-        if(restaurant == null) {
+        Optional<Restaurants> restaurant = restaurantRepository.findById(id);
+        if(restaurant.isEmpty()) {
             throw new RestaurantNotFoundException("対象のレストランが見つかりません");
         }
 
         // prepare response
         RestaurantDetailResponse response = new RestaurantDetailResponse();
-        response.setRestaurant(restaurant);
+        response.setRestaurant(restaurant.get());
 
         return response;
     }
