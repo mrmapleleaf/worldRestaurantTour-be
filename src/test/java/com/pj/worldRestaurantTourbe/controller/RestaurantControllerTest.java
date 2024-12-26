@@ -67,7 +67,7 @@ public class RestaurantControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/restaurant/allRestaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.content", hasSize(1)));
+                .andExpect(jsonPath("$.contents", hasSize(1)));
     }
 
     @Test

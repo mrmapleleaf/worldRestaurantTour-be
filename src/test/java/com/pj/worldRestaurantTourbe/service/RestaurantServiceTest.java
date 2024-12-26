@@ -107,7 +107,7 @@ public class RestaurantServiceTest {
             restaurant.setUrl("http://sample.com");
 
             // set mock
-            when(restaurantRepositoryMock.findByCountriesId(countryId)).thenReturn(restaurant);
+            when(restaurantRepositoryMock.findById(1)).thenReturn(Optional.of(restaurant));
 
             // execute target method
             RestaurantDetailResponse response = restaurantService.detail(countryId);
@@ -118,7 +118,7 @@ public class RestaurantServiceTest {
             assertEquals(1, restaurant.getCountries().getId());
 
             // verify method invocation
-            verify(restaurantRepositoryMock).findByCountriesId(countryId);
+            verify(restaurantRepositoryMock).findById(countryId);
         }
 
         @Test
@@ -140,7 +140,7 @@ public class RestaurantServiceTest {
             );
 
             // verify method invocation
-            verify(restaurantRepositoryMock).findByCountriesId(countryId);
+            verify(restaurantRepositoryMock).findById(countryId);
         }
     }
 
@@ -221,7 +221,7 @@ public class RestaurantServiceTest {
             AllRestaurantsResponse response = restaurantService.getAllRestaurant();
 
             // asser response
-            assertEquals(restaurantsList.size(), response.getContent().size());
+            assertEquals(restaurantsList.size(), response.getContents().size());
 
             // verify method invocations
             verify(restaurantRepositoryMock).findAll();
