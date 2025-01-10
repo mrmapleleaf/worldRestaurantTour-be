@@ -90,6 +90,13 @@ public class RestaurantControllerTest {
                 .andExpect(jsonPath("$.restaurant.countries.id", is(2)));
     }
 
+    // 同じ国に対して２つレストランを登録する
+    @Test
+    @DisplayName("registerTwoRestaurantsForTheSameCountry")
+    public void registerTwoRestaurantsForTheSameCountryHttpRequest() throws Exception{
+        
+    }
+
     @Test
     @DisplayName("getRestaurantDetail")
     public void getRestaurantDetailHttpRequest() throws Exception {

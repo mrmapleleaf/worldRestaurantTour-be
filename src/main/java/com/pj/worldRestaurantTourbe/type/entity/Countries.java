@@ -21,9 +21,6 @@ public class Countries extends AbstractEntity{
     @Column(name = "next")
     private boolean next;
 
-    @Column(name = "restaurant_id")
-    private Integer restaurant_id;
-
     @Column(name = "completed")
     private boolean completed;
 
