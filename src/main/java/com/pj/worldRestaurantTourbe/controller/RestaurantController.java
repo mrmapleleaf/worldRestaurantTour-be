@@ -5,6 +5,7 @@ import com.pj.worldRestaurantTourbe.type.form.CompletedRestaurantFrom;
 import com.pj.worldRestaurantTourbe.type.response.AllRestaurantsResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantDetailResponse;
 import com.pj.worldRestaurantTourbe.type.response.RestaurantResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 @RestController
 @RequestMapping(value = "/restaurant")
+@Slf4j
 public class RestaurantController {
 
     @Autowired
@@ -28,6 +32,7 @@ public class RestaurantController {
 
     @PostMapping(value = "/register")
     public RestaurantResponse register(@RequestBody CompletedRestaurantFrom form) {
+        log.info(form.toString());
         return restaurantService.register(form);
     }
 

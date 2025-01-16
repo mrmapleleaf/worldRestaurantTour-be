@@ -46,12 +46,13 @@ public class RestaurantService {
     }
 
     public RestaurantResponse register(CompletedRestaurantFrom form){
-
+        log.info("start");
         // check if country does not exist
         Countries country = countryRepository.findById(form.getCountryId()).orElseThrow(
                 () -> new CountryNotFoundException("指定された国が存在しません")
         );
 
+        log.info("prepare restaurant");
         // prepare restaurant object to save
         Restaurants restautants = new Restaurants();
         restautants.setCountries(country);
@@ -59,13 +60,17 @@ public class RestaurantService {
         restautants.setThoughts(form.getThoughts());
         restautants.setUrl(form.getUrl());
 
+        log.info("save restaurant");
         // save restaurant object
         restautants = restaurantRepository.save(restautants);
+        log.info(String.valueOf(restautants.getId()));
 
+        log.info("prepare restaurant");
         // prepare response
         RestaurantResponse response = new RestaurantResponse();
         response.setRestaurant(restautants);
 
+        log.info("return response");
         return response;
     }
 
