@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,10 +43,22 @@ public class CountryService {
 
         // fetch next country
         List<Countries> nextCountry = countryRepository.findByNextIs(next);
+        List<CountryItem> items = new ArrayList<>();
+
+        if (!nextCountry.isEmpty()) {
+            items = nextCountry.stream().map(country -> {
+                return new CountryItem(
+                        country.getId(),
+                        country.getName(),
+                        country.isNext(),
+                        country.isCompleted()
+                );
+            }).toList();
+        }
 
         // prepare response
         NextCountryResponse response = new NextCountryResponse();
-        response.setNextCountry(nextCountry);
+        response.setNextCountry(items);
          
         return response;
     }
