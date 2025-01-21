@@ -33,45 +33,43 @@ public class RestaurantService {
 
         List<RestaurantItem> items = restaurantsList.stream()
                 .map(restaurants -> {
-                    RestaurantItem item = new RestaurantItem();
-                    item.setId(restaurants.getId());
-                    item.setName(restaurants.getName());
-                    item.setThoughts(restaurants.getThoughts());
-                    item.setUrl(restaurants.getUrl());
-                    item.setCountries(restaurants.getCountries());
-                    return item;
+                    return new RestaurantItem(
+                            restaurants.getId(),
+                            restaurants.getName(),
+                            restaurants.getThoughts(),
+                            restaurants.getUrl(),
+                            restaurants.getCountries()
+                    );
                 }).toList();
 
         return new AllRestaurantsResponse(items);
     }
 
     public RestaurantResponse register(CompletedRestaurantFrom form){
-        log.info("start");
+
         // check if country does not exist
         Countries country = countryRepository.findById(form.getCountryId()).orElseThrow(
                 () -> new CountryNotFoundException("指定された国が存在しません")
         );
 
-        log.info("prepare restaurant");
         // prepare restaurant object to save
-        Restaurants restautants = new Restaurants();
-        restautants.setCountries(country);
-        restautants.setName(form.getName());
-        restautants.setThoughts(form.getThoughts());
-        restautants.setUrl(form.getUrl());
+        Restaurants restaurants = new Restaurants();
+        restaurants.setCountries(country);
+        restaurants.setName(form.getName());
+        restaurants.setThoughts(form.getThoughts());
+        restaurants.setUrl(form.getUrl());
 
-        log.info("save restaurant");
         // save restaurant object
-        restautants = restaurantRepository.save(restautants);
-        log.info(String.valueOf(restautants.getId()));
+        restaurants = restaurantRepository.save(restaurants);
 
-        log.info("prepare restaurant");
-        // prepare response
-        RestaurantResponse response = new RestaurantResponse();
-        response.setRestaurant(restautants);
-
-        log.info("return response");
-        return response;
+        // return response
+        return new RestaurantResponse(
+                restaurants.getId(),
+                restaurants.getName(),
+                restaurants.getThoughts(),
+                restaurants.getUrl(),
+                restaurants.getCountries()
+        );
     }
 
 
@@ -83,11 +81,14 @@ public class RestaurantService {
             throw new RestaurantNotFoundException("対象のレストランが見つかりません");
         }
 
-        // prepare response
-        RestaurantDetailResponse response = new RestaurantDetailResponse();
-        response.setRestaurant(restaurant.get());
-
-        return response;
+        // return response
+        return new RestaurantDetailResponse(
+                restaurant.get().getId(),
+                restaurant.get().getName(),
+                restaurant.get().getThoughts(),
+                restaurant.get().getUrl(),
+                restaurant.get().getCountries()
+        );
     }
 
     public RestaurantResponse delete(int id) {
@@ -99,10 +100,13 @@ public class RestaurantService {
         // delete target
         restaurantRepository.delete(restaurants);
 
-        // prepare response
-        RestaurantResponse response = new RestaurantResponse();
-        response.setRestaurant(restaurants);
-
-        return response;
+        // return response
+        return new RestaurantResponse(
+                restaurants.getId(),
+                restaurants.getName(),
+                restaurants.getThoughts(),
+                restaurants.getUrl(),
+                restaurants.getCountries()
+        );
     }
 }

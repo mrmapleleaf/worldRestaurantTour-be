@@ -113,10 +113,10 @@ public class CountryControllerTest {
                 .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.country.id", is(1)))
-                .andExpect(jsonPath("$.country.name", is("japan")))
-                .andExpect(jsonPath("$.country.next", is(true)))
-                .andExpect(jsonPath("$.country.completed", is(false)));
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("japan")))
+                .andExpect(jsonPath("$.next", is(true)))
+                .andExpect(jsonPath("$.completed", is(false)));
 
         NextCountryResponse nextCountries = countryService.getNextCountry(true);
         assertEquals(1, nextCountries.getNextCountry().size());
@@ -138,10 +138,10 @@ public class CountryControllerTest {
                         .content(objectMapper.writeValueAsString(nextCountryForm)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.country.id", is(4)))
-                .andExpect(jsonPath("$.country.name", is("india")))
-                .andExpect(jsonPath("$.country.next", is(false)))
-                .andExpect(jsonPath("$.country.completed", is(false)));
+                .andExpect(jsonPath("$.id", is(4)))
+                .andExpect(jsonPath("$.name", is("india")))
+                .andExpect(jsonPath("$.next", is(false)))
+                .andExpect(jsonPath("$.completed", is(false)));
 
         nextCountries = countryService.getNextCountry(true);
         assertEquals(0, nextCountries.getNextCountry().size());
@@ -159,10 +159,10 @@ public class CountryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(visitedCountryForm)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.country.id", is(4)))
-                .andExpect(jsonPath("$.country.name", is("india")))
-                .andExpect(jsonPath("$.country.next", is(false)))
-                .andExpect(jsonPath("$.country.completed", is(true)));
+                .andExpect(jsonPath("$.id", is(4)))
+                .andExpect(jsonPath("$.name", is("india")))
+                .andExpect(jsonPath("$.next", is(false)))
+                .andExpect(jsonPath("$.completed", is(true)));
     }
 
     private void insertSecondRecord() {

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
@@ -76,8 +75,8 @@ public class RestaurantServiceTest {
             RestaurantResponse response = restaurantService.register(form);
 
             // assert response
-            assertEquals(form.getCountryId(), response.getRestaurant().getCountries().getId());
-            assertEquals(form.getName(), response.getRestaurant().getName());
+            assertEquals(form.getCountryId(), response.getCountries().getId());
+            assertEquals(form.getName(), response.getName());
 
             // verify method invocations
             verify(countryRepositoryMock).findById(form.getCountryId());
@@ -93,11 +92,11 @@ public class RestaurantServiceTest {
         public void testGetRestaurantDetailWhenTargetRestaurantExists() {
 
             // prepare test data
-            int countryId = 1;
+            int restaurantId = 1;
 
             Restaurants restaurant = new Restaurants();
             Countries country = new Countries();
-            country.setId(countryId);
+            country.setId(restaurantId);
 
             Optional<Countries> countryOptional = Optional.of(country);
             restaurant.setId(1);
@@ -110,15 +109,14 @@ public class RestaurantServiceTest {
             when(restaurantRepositoryMock.findById(1)).thenReturn(Optional.of(restaurant));
 
             // execute target method
-            RestaurantDetailResponse response = restaurantService.detail(countryId);
+            RestaurantDetailResponse response = restaurantService.detail(restaurantId);
 
             // assert response
-            assertNotNull(response);
             assertEquals(1, restaurant.getId());
             assertEquals(1, restaurant.getCountries().getId());
 
             // verify method invocation
-            verify(restaurantRepositoryMock).findById(countryId);
+            verify(restaurantRepositoryMock).findById(restaurantId);
         }
 
         @Test
@@ -169,8 +167,7 @@ public class RestaurantServiceTest {
             RestaurantResponse response = restaurantService.delete(id);
 
             // assert response
-            assertNotNull(response.getRestaurant());
-            assertEquals(targetRestaurant.getId(), response.getRestaurant().getId());
+            assertEquals(targetRestaurant.getId(), response.getId());
 
             // verify method invocation
             verify(restaurantRepositoryMock).findById(id);

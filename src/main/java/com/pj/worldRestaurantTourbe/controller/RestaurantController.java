@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
-
 @RestController
 @RequestMapping(value = "/restaurant")
 @Slf4j

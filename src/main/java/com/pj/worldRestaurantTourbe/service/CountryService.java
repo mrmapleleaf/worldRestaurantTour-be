@@ -60,11 +60,13 @@ public class CountryService {
         // set next country
         countryRepository.save(targetCountry);
 
-        // prepare response
-        CountryResponse response = new CountryResponse();
-        response.setCountry(targetCountry);
-
-        return response;
+        // prepare and return response
+        return new CountryResponse(
+                targetCountry.getId(),
+                targetCountry.getName(),
+                targetCountry.isNext(),
+                targetCountry.isCompleted()
+        );
     }
 
     @Transactional
@@ -78,11 +80,13 @@ public class CountryService {
         // unset next country
         countryRepository.save(targetCountry);
 
-        // prepare response
-        CountryResponse response = new CountryResponse();
-        response.setCountry(targetCountry);
-
-        return response;
+        // prepare and return response
+        return new CountryResponse(
+                targetCountry.getId(),
+                targetCountry.getName(),
+                targetCountry.isNext(),
+                targetCountry.isCompleted()
+        );
     }
 
     @Transactional
@@ -97,10 +101,12 @@ public class CountryService {
         // set country completed
         countryRepository.save(targetCountry);
 
-        // prepare response
-        CountryResponse response = new CountryResponse();
-        response.setCountry(targetCountry);
-
-        return response;
+        // prepare and return response
+        return new CountryResponse(
+                targetCountry.getId(),
+                targetCountry.getName(),
+                targetCountry.isNext(),
+                targetCountry.isCompleted()
+        );
     }
 }

@@ -55,9 +55,9 @@ public class RestaurantControllerTest {
 
     @BeforeEach
     public void setupDatabase() {
-        jdbc.execute(sqlAddCountry4);
-        jdbc.execute(sqlAddCountry5);
-        jdbc.execute(sqlAddRestaurant);
+            jdbc.execute(sqlAddCountry4);
+            jdbc.execute(sqlAddCountry5);
+            jdbc.execute(sqlAddRestaurant);
     }
 
     @Test
@@ -73,6 +73,7 @@ public class RestaurantControllerTest {
     @Test
     @DisplayName("registerRestaurant")
     public void registerRestaurantHttpRequest() throws Exception{
+
         CompletedRestaurantFrom form = new CompletedRestaurantFrom();
         form.setCountryId(2);
         form.setName("レストラン");
@@ -84,11 +85,13 @@ public class RestaurantControllerTest {
                 .content(objectMapper.writeValueAsString(form)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.restaurant.name", is("レストラン")))
-                .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
-                .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
-                .andExpect(jsonPath("$.restaurant.countries.id", is(2)));
+                .andExpect(jsonPath("$.name", is("レストラン")))
+                .andExpect(jsonPath("$.thoughts", is("good")))
+                .andExpect(jsonPath("$.url", is("http://sample.com")))
+                .andExpect(jsonPath("$.countries.id", is(2)));
     }
+
+
 
     // 同じ国に対して２つレストランを登録する
     @Test
@@ -100,31 +103,31 @@ public class RestaurantControllerTest {
     @Test
     @DisplayName("getRestaurantDetail")
     public void getRestaurantDetailHttpRequest() throws Exception {
-        int countryId = 1;
+        int restaurantId = 2;
 
-       this.mockMvc.perform(MockMvcRequestBuilders.get("/restaurant/detail/{country}", countryId)
+       this.mockMvc.perform(MockMvcRequestBuilders.get("/restaurant/detail/{restaurant}", restaurantId)
                .contentType(APPLICATION_JSON_UTF8))
                .andExpect(status().isOk())
                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-               .andExpect(jsonPath("$.restaurant.name", is("restaurant")))
-               .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
-               .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
-               .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
+               .andExpect(jsonPath("$.name", is("restaurant")))
+               .andExpect(jsonPath("$.thoughts", is("good")))
+               .andExpect(jsonPath("$.url", is("http://sample.com")))
+               .andExpect(jsonPath("$.countries.id", is(1)));
     }
 
     @Test
     @DisplayName("deleteRestaurant")
     public void deleteRestaurantHttpRequest() throws Exception {
-        int restaurantId = 1;
+        int restaurantId = 2;
 
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/restaurant/delete/{restaurantId}", restaurantId)
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.restaurant.name", is("restaurant")))
-                .andExpect(jsonPath("$.restaurant.thoughts", is("good")))
-                .andExpect(jsonPath("$.restaurant.url", is("http://sample.com")))
-                .andExpect(jsonPath("$.restaurant.countries.id", is(1)));
+                .andExpect(jsonPath("$.name", is("restaurant")))
+                .andExpect(jsonPath("$.thoughts", is("good")))
+                .andExpect(jsonPath("$.url", is("http://sample.com")))
+                .andExpect(jsonPath("$.countries.id", is(1)));
     }
 
     @AfterEach
