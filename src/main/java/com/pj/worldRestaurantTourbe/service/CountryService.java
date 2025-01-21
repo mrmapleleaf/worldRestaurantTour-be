@@ -1,5 +1,6 @@
 package com.pj.worldRestaurantTourbe.service;
 
+import com.pj.worldRestaurantTourbe.type.CountryItem;
 import com.pj.worldRestaurantTourbe.type.entity.Countries;
 import com.pj.worldRestaurantTourbe.repository.CountryRepository;
 import com.pj.worldRestaurantTourbe.type.error.CountryNotFoundException;
@@ -24,11 +25,17 @@ public class CountryService {
         // fetch all countries
         List<Countries> AllCountries = countryRepository.findAll();
 
-        // prepare responce
-        AllCountriesIndexResponce responce = new AllCountriesIndexResponce();
-        responce.setCountries(AllCountries);
+        // prepare items
+        List<CountryItem> items = AllCountries.stream().map(item -> {
+            return new CountryItem(
+                    item.getId(),
+                    item.getName(),
+                    item.isNext(),
+                    item.isCompleted()
+            );
+        }).toList();
 
-        return responce;
+        return new AllCountriesIndexResponce(items);
     }
 
     public NextCountryResponse getNextCountry(boolean next) {
