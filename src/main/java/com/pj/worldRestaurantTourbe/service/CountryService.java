@@ -39,10 +39,10 @@ public class CountryService {
         return new AllCountriesIndexResponce(items);
     }
 
-    public NextCountryResponse getNextCountry(boolean next) {
+    public NextCountryResponse getNextCountry() {
 
         // fetch next country
-        List<Countries> nextCountry = countryRepository.findByNextIs(next);
+        List<Countries> nextCountry = countryRepository.findByNextIs();
         List<CountryItem> items = new ArrayList<>();
 
         if (!nextCountry.isEmpty()) {
@@ -67,7 +67,7 @@ public class CountryService {
     public CountryResponse setNextCountry(int id) {
 
         // check If next country already exists
-        List<Countries> countries = countryRepository.findByNextIs(true);
+        List<Countries> countries = countryRepository.findByNextIs();
         if (!countries.isEmpty()) {
             throw new RuntimeException("次に行く国がすでに存在しています");
         }

@@ -91,8 +91,7 @@ public class CountryControllerTest {
     public void getNextCountryHttpRequest() throws Exception {
         insertSecondRecord();
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/country/nextCountry")
-                        .param("next", "true"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/country/nextCountry"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.nextCountry", hasSize(1)));
@@ -102,7 +101,7 @@ public class CountryControllerTest {
     @DisplayName("decideNextCountry")
     public void decideNextCountryHttpRequest() throws Exception {
 
-        NextCountryResponse response = countryService.getNextCountry(true);
+        NextCountryResponse response = countryService.getNextCountry();
         assertEquals(0, response.getNextCountry().size());
 
         NextCountryForm nextCountryForm = new NextCountryForm();
@@ -118,7 +117,7 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.next", is(true)))
                 .andExpect(jsonPath("$.completed", is(false)));
 
-        NextCountryResponse nextCountries = countryService.getNextCountry(true);
+        NextCountryResponse nextCountries = countryService.getNextCountry();
         assertEquals(1, nextCountries.getNextCountry().size());
     }
 
@@ -127,7 +126,7 @@ public class CountryControllerTest {
     public void resetNextCountryHttpRequest() throws Exception {
         insertSecondRecord();
 
-        NextCountryResponse nextCountries = countryService.getNextCountry(true);
+        NextCountryResponse nextCountries = countryService.getNextCountry();
         assertEquals(1, nextCountries.getNextCountry().size());
 
         NextCountryForm nextCountryForm = new NextCountryForm();
@@ -143,7 +142,7 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.next", is(false)))
                 .andExpect(jsonPath("$.completed", is(false)));
 
-        nextCountries = countryService.getNextCountry(true);
+        nextCountries = countryService.getNextCountry();
         assertEquals(0, nextCountries.getNextCountry().size());
     }
 

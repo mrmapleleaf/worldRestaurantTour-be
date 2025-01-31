@@ -58,15 +58,14 @@ class CountryServiceTest {
     @Test
     @DisplayName("get next country")
     public void getNextCountryTest() {
-        boolean isNext = true;
 
         ReflectionTestUtils.setField(country, "next", true);
 
-        doReturn(new ArrayList<>(Collections.singletonList(country))).when(countryRepository).findByNextIs(isNext);
+        doReturn(new ArrayList<>(Collections.singletonList(country))).when(countryRepository).findByNextIs();
 
-        assertNotNull(countryService.getNextCountry(isNext), "country should not be null");
+        assertNotNull(countryService.getNextCountry(), "country should not be null");
         assertTrue(country.isNext());
-        verify(countryRepository, times(1)).findByNextIs(isNext);
+        verify(countryRepository, times(1)).findByNextIs();
     }
 
     @Test

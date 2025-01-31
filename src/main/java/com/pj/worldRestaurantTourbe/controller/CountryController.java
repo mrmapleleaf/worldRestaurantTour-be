@@ -27,8 +27,8 @@ public class CountryController {
     }
 
     @GetMapping("/nextCountry")
-    public NextCountryResponse getNextCountry(@RequestParam boolean next) {
-        return countryService.getNextCountry(next);
+    public NextCountryResponse getNextCountry() {
+        return countryService.getNextCountry();
     }
 
     @PutMapping("/decideNextCountry")
